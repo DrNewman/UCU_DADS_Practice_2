@@ -1,0 +1,6 @@
+server:
+  port: 8080
+
+raft:
+  node-id: ${RAFT_NODE_ID:node1}
+  peers: ${RAFT_PEERS:http://node2:8080,http://node3:8080}
