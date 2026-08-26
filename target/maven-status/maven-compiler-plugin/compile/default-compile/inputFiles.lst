@@ -1,0 +1,13 @@
+C:\Workspace\UCU\4 Distributed Algorithms and Data Structures\raft-node\src\main\java\com\ucu\raft\config\RaftConfig.java
+C:\Workspace\UCU\4 Distributed Algorithms and Data Structures\raft-node\src\main\java\com\ucu\raft\config\RaftProperties.java
+C:\Workspace\UCU\4 Distributed Algorithms and Data Structures\raft-node\src\main\java\com\ucu\raft\controller\ClientController.java
+C:\Workspace\UCU\4 Distributed Algorithms and Data Structures\raft-node\src\main\java\com\ucu\raft\controller\RaftInternalController.java
+C:\Workspace\UCU\4 Distributed Algorithms and Data Structures\raft-node\src\main\java\com\ucu\raft\model\AppendEntriesDto.java
+C:\Workspace\UCU\4 Distributed Algorithms and Data Structures\raft-node\src\main\java\com\ucu\raft\model\LogEntry.java
+C:\Workspace\UCU\4 Distributed Algorithms and Data Structures\raft-node\src\main\java\com\ucu\raft\model\NodeRole.java
+C:\Workspace\UCU\4 Distributed Algorithms and Data Structures\raft-node\src\main\java\com\ucu\raft\model\RequestVoteDto.java
+C:\Workspace\UCU\4 Distributed Algorithms and Data Structures\raft-node\src\main\java\com\ucu\raft\RaftNodeApplication.java
+C:\Workspace\UCU\4 Distributed Algorithms and Data Structures\raft-node\src\main\java\com\ucu\raft\service\RaftClientSender.java
+C:\Workspace\UCU\4 Distributed Algorithms and Data Structures\raft-node\src\main\java\com\ucu\raft\service\RaftScheduler.java
+C:\Workspace\UCU\4 Distributed Algorithms and Data Structures\raft-node\src\main\java\com\ucu\raft\service\RaftService.java
+C:\Workspace\UCU\4 Distributed Algorithms and Data Structures\raft-node\src\main\java\com\ucu\raft\service\RaftState.java
