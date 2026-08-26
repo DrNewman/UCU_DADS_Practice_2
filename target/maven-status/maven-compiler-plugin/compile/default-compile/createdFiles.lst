@@ -1,0 +1,17 @@
+com\ucu\raft\RaftNodeApplication.class
+com\ucu\raft\model\NodeRole.class
+com\ucu\raft\model\LogEntry.class
+com\ucu\raft\model\RequestVoteDto$Response.class
+com\ucu\raft\service\RaftState.class
+com\ucu\raft\config\RaftConfig.class
+com\ucu\raft\model\RequestVoteDto.class
+com\ucu\raft\controller\RaftInternalController.class
+com\ucu\raft\config\RaftProperties.class
+com\ucu\raft\service\RaftScheduler.class
+com\ucu\raft\controller\ClientController.class
+com\ucu\raft\service\RaftClientSender.class
+com\ucu\raft\model\RequestVoteDto$Request.class
+com\ucu\raft\model\AppendEntriesDto.class
+com\ucu\raft\service\RaftService.class
+com\ucu\raft\model\AppendEntriesDto$Request.class
+com\ucu\raft\model\AppendEntriesDto$Response.class
