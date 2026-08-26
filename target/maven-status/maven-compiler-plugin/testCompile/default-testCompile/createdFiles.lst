@@ -1,0 +1,8 @@
+com\ucu\raft\RaftTestSupport.class
+com\ucu\raft\RaftTestSupport$LogResponse.class
+com\ucu\raft\RaftTestSupport$StateMachineResponse.class
+com\ucu\raft\RaftTestSupport$CommandDto.class
+com\ucu\raft\RaftTestSupport$LogEntryDto.class
+com\ucu\raft\AcceptanceTestIT.class
+com\ucu\raft\service\RaftServiceTest.class
+com\ucu\raft\RaftTestSupport$StateResponse.class
