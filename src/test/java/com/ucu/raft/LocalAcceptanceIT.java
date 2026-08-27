@@ -7,7 +7,6 @@ import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -34,27 +33,24 @@ public class LocalAcceptanceIT {
     private static final Map<String, Process> processes = new HashMap<>();
 
     public record StateResponse(String nodeId, String state, long currentTerm, long commitIndex, long lastApplied,  List<LogEntry> log) {}
-    public record LogEntryDto(long index, long term, Map<String, Object> command) {}
-    public record LogResponse(String nodeId, long commitIndex, List<LogEntryDto> log) {}
-    public record StateMachineResponse(String nodeId, Map<String, Integer> state) {}
 
     @BeforeAll
     static void startProcesses() throws Exception {
         // Запускаємо ноди через локальний java -jar
         log.info("Using JAR file: {}", JAR_PATH);
 
-        startNode(1, JAR_PATH);
-        startNode(2, JAR_PATH);
-        startNode(3, JAR_PATH);
+        startNode(1);
+        startNode(2);
+        startNode(3);
     }
 
-    private static void startNode(int id, String jarPath) throws IOException {
+    private static void startNode(int id) throws IOException {
         String peers = String.format("http://localhost:%d,http://localhost:%d",
                 id == 1 ? HTTP_PORTS.get(2) : HTTP_PORTS.get(1),
                 id == 3 ? HTTP_PORTS.get(2) : HTTP_PORTS.get(3));
 
         ProcessBuilder pb = new ProcessBuilder(
-                "java", "-jar", jarPath,
+                "java", "-jar", JAR_PATH,
                 "--server.port=" + HTTP_PORTS.get(id),
                 "--raft.node-id=node" + id,
                 "--raft.peers=" + peers
@@ -75,8 +71,9 @@ public class LocalAcceptanceIT {
         StateResponse leader = awaitSingleLeader(List.of("node1", "node2", "node3"), 0);
         assertNotNull(leader);
 
-        postCommand(HTTP_PORTS.get(Integer.parseInt(leader.nodeId().replace("node", ""))), "msg1");
-        postCommand(HTTP_PORTS.get(Integer.parseInt(leader.nodeId().replace("node", ""))), "msg2");
+        int nodeId = Integer.parseInt(leader.nodeId().replace("node", ""));
+        postCommand(HTTP_PORTS.get(nodeId), "msg1");
+        postCommand(HTTP_PORTS.get(nodeId), "msg2");
 
         awaitConverged(List.of(1, 2, 3), List.of("msg1", "msg2"), 2);
     }
@@ -87,7 +84,6 @@ public class LocalAcceptanceIT {
     void testPartitionAndOverwriting() throws Exception {
         StateResponse oldLeaderState = awaitSingleLeader(List.of("node1", "node2", "node3"), 0);
         String oldLeaderId = oldLeaderState.nodeId();
-        int oldLeaderPort = HTTP_PORTS.get(Integer.parseInt(oldLeaderId.replace("node", "")));
 
         // 1. Зупиняємо старого лідера (імітація network partition)
         processes.get(oldLeaderId).destroyForcibly();
@@ -104,7 +100,7 @@ public class LocalAcceptanceIT {
         postCommand(newLeaderPort, "msg4");
 
         // 4. Відновлюємо старого лідера назад
-        startNode(Integer.parseInt(oldLeaderId.replace("node", "")), JAR_PATH);
+        startNode(Integer.parseInt(oldLeaderId.replace("node", "")));
 
         // 5. Перевіряємо, що лог синхронізувався
         awaitConverged(List.of(1, 2, 3), List.of("msg1", "msg2", "msg3", "msg4"), 4);
@@ -137,7 +133,7 @@ public class LocalAcceptanceIT {
 
     private static StateResponse awaitSingleLeader(List<String> nodes, long minTerm) {
         final StateResponse[] result = new StateResponse[1];
-        await().atMost(Duration.ofSeconds(45)).pollInterval(Duration.ofMillis(300)).until(() -> {
+        await().atMost(Duration.ofSeconds(30)).pollInterval(Duration.ofMillis(300)).until(() -> {
             int count = 0;
             for (String node : nodes) {
                 int port = HTTP_PORTS.get(Integer.parseInt(node.replace("node", "")));

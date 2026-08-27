@@ -56,13 +56,13 @@ public class RaftState {
 
     public long getLastLogIndex() {
         synchronized (log) {
-            return log.isEmpty() ? 0 : log.get(log.size() - 1).getIndex();
+            return log.isEmpty() ? 0 : log.getLast().getIndex();
         }
     }
 
     public long getLastLogTerm() {
         synchronized (log) {
-            return log.isEmpty() ? 0 : log.get(log.size() - 1).getTerm();
+            return log.isEmpty() ? 0 : log.getLast().getTerm();
         }
     }
 
