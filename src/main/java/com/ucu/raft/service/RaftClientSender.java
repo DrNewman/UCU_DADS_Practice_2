@@ -2,16 +2,18 @@ package com.ucu.raft.service;
 
 import com.ucu.raft.model.AppendEntriesDto;
 import com.ucu.raft.model.RequestVoteDto;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Duration;
 
-@Slf4j
 @Service
 public class RaftClientSender {
+
+    private static final Logger log = LoggerFactory.getLogger(RaftClientSender.class);
 
     private final RestTemplate restTemplate;
 

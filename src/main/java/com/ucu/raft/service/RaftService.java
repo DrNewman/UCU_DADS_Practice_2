@@ -5,9 +5,8 @@ import com.ucu.raft.model.AppendEntriesDto;
 import com.ucu.raft.model.LogEntry;
 import com.ucu.raft.model.NodeRole;
 import com.ucu.raft.model.RequestVoteDto;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,17 +15,22 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 public class RaftService {
+
+    private static final Logger log = LoggerFactory.getLogger(RaftService.class);
 
     private final RaftState raftState;
     private final RaftProperties raftProperties;
     private final RaftClientSender raftClientSender;
 
-    @Setter
     private RaftScheduler raftScheduler;
+
+    public RaftService(RaftState raftState, RaftProperties raftProperties, RaftClientSender raftClientSender) {
+        this.raftState = raftState;
+        this.raftProperties = raftProperties;
+        this.raftClientSender = raftClientSender;
+    }
 
     // Запуск виборів
     public void startElection() {
@@ -231,6 +235,7 @@ public class RaftService {
                         long currentNext = raftState.getNextIndex().getOrDefault(peerUrl, 1L);
                         if (currentNext > 1) {
                             raftState.getNextIndex().put(peerUrl, currentNext - 1);
+                            log.info("Decreased nextIndex for {} to {}", peerUrl, currentNext - 1);
                         }
                     }
                 }
@@ -348,5 +353,9 @@ public class RaftService {
         while (currentLog.size() > fromIndex && !currentLog.isEmpty()) {
             currentLog.removeLast();
         }
+    }
+
+    public void setRaftScheduler(RaftScheduler raftScheduler) {
+        this.raftScheduler = raftScheduler;
     }
 }

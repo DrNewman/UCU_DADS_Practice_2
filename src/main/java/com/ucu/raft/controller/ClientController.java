@@ -3,7 +3,6 @@ package com.ucu.raft.controller;
 import com.ucu.raft.config.RaftProperties;
 import com.ucu.raft.service.RaftService;
 import com.ucu.raft.service.RaftState;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,12 +10,17 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
-@RequiredArgsConstructor
 public class ClientController {
 
     private final RaftProperties raftProperties;
     private final RaftState raftState;
     private final RaftService raftService;
+
+    public ClientController(RaftProperties raftProperties, RaftState raftState, RaftService raftService) {
+        this.raftProperties = raftProperties;
+        this.raftState = raftState;
+        this.raftService = raftService;
+    }
 
     @GetMapping("/state")
     public ResponseEntity<Map<String, Object>> getState() {

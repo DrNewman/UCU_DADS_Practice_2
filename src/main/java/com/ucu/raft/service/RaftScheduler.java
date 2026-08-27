@@ -3,17 +3,17 @@ package com.ucu.raft.service;
 import com.ucu.raft.model.NodeRole;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Random;
 import java.util.concurrent.*;
 
-@Slf4j
 @Component
-@RequiredArgsConstructor
 public class RaftScheduler {
+
+    private static final Logger log = LoggerFactory.getLogger(RaftScheduler.class);
 
     private final RaftService raftService;
     private final RaftState raftState;
@@ -21,6 +21,11 @@ public class RaftScheduler {
 
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(4);
     private ScheduledFuture<?> electionTimeoutTask;
+
+    public RaftScheduler(RaftService raftService, RaftState raftState) {
+        this.raftService = raftService;
+        this.raftState = raftState;
+    }
 
     @PostConstruct
     public void init() {

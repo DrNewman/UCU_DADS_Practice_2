@@ -2,8 +2,6 @@ package com.ucu.raft.service;
 
 import com.ucu.raft.model.LogEntry;
 import com.ucu.raft.model.NodeRole;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -13,7 +11,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 @Component
-@Getter
 public class RaftState {
 
     private volatile NodeRole role = NodeRole.FOLLOWER;
@@ -67,5 +64,37 @@ public class RaftState {
         synchronized (log) {
             return log.isEmpty() ? 0 : log.get(log.size() - 1).getTerm();
         }
+    }
+
+    public NodeRole getRole() {
+        return role;
+    }
+
+    public long getCurrentTerm() {
+        return currentTerm;
+    }
+
+    public String getVotedFor() {
+        return votedFor;
+    }
+
+    public long getCommitIndex() {
+        return commitIndex;
+    }
+
+    public long getLastApplied() {
+        return lastApplied;
+    }
+
+    public ConcurrentMap<String, Long> getNextIndex() {
+        return nextIndex;
+    }
+
+    public ConcurrentMap<String, Long> getMatchIndex() {
+        return matchIndex;
+    }
+
+    public List<LogEntry> getLog() {
+        return log;
     }
 }
